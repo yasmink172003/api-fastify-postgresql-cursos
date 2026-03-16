@@ -42,7 +42,7 @@ const PostCursos = (pool) => {
 
        try{
       await connection.query("BEGIN");
-      const result = await pool.query(`
+      const result = await connection.query(`
         INSERT INTO cursos
         (nome, horas, ano)
         VALUES ($1,$2,$3
@@ -95,7 +95,7 @@ const PutCursos = (pool) => {
       try {
       const { nome, horas, ano } = request.body//pega os dados do curso do campo de requisicao
 
-      const result = await pool.query(`
+      const result = await connection.query(`
         UPDATE cursos
         SET nome=$1, horas=$2, ano=$3
         WHERE id=$4
@@ -140,13 +140,14 @@ const DeleteCursos = (pool) => {
    try {
 
       const { id } = request.params//pega o id do curso da url
-      const result = await pool.query(`
+      const result = await connection.query(`
         DELETE FROM cursos
         WHERE id=$1
         RETURNING *
-      `, [id])
+      `, [id]
+ );
 
-      return reply.status(200).send({
+      return reply.code (200).send({
         mensagem: "Curso deletado",
         curso: result.rows
       })
