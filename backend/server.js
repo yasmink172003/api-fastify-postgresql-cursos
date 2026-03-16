@@ -26,11 +26,11 @@ reply.send(err)
 })
 
 // ROTAS
-fastify.get('/v1/GetCursos',{preHandler:[fastify.authenticate]},cursos.GetCursos(pool))
-fastify.post('/v1/PostCursos',{preHandler:[fastify.authenticate]},cursos.PostCursos(pool))
-fastify.put('/v1/PutCursos/:id',{preHandler:[fastify.authenticate]},cursos.PutCursos(pool))
-fastify.delete('/v1/DeleteCursos/:id',{preHandler:[fastify.authenticate]},cursos.DeleteCursos(pool))
-fastify.post('/v1/PostUsers',usuarios.authUsers(pool,fastify.jwt,bcrypt,jwtSecret))
+fastify.get('/v1/GetCursos',{preHandler:[fastify.authenticate]},cursos.GetCursos(pool));
+fastify.post('/v1/PostCursos',{preHandler:[fastify.authenticate]},cursos.PostCursos(pool));
+fastify.put('/v1/PutCursos/:id',{preHandler:[fastify.authenticate]},cursos.PutCursos(pool));
+fastify.delete('/v1/DeleteCursos/:id',{preHandler:[fastify.authenticate]},cursos.DeleteCursos(pool));
+fastify.post('/v1/PostUsers',usuarios.authUsers(pool,fastify.jwt,bcrypt,jwtSecret));
 
 //Servidor
 fastify.listen({port: 3000}, ()=>{
