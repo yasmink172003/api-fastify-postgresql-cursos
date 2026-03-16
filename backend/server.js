@@ -15,7 +15,6 @@ const jwtSecret = "S3NH@- S3CR3T@"
 fastify.register(jwt, {//configura o jwt
     secret: jwtSecret
 })
-
 // Middleware autenticação
 fastify.decorate("authenticate", async (req, reply) => {
 try{
