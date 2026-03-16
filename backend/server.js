@@ -12,14 +12,14 @@ const jwtSecret = process.env.JWT_SECRET//variavel de ambiente para jwt
 
 // CORS
 fastify.register(cors)//frontend pode acessar a api
-
 // JWT
+const jwtSecret = "S3NH@- S3CR3T@"
 fastify.register(jwt, {//configura o jwt
     secret: jwtSecret
 })
 
 // Middleware autenticação
-fastify.decorate("authenticate", async function(req, reply){
+fastify.decorate("authenticate", async (req, reply) => {
 try{
 await request.jwtVerify()//verfica se o token é valido
 }
