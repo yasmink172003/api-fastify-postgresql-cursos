@@ -9,7 +9,7 @@ const authUsers = (pool, jwt, bcrypt, jwtSecret) => {//funcao para autenticar us
    
     
     try {
-       const result = await pool.query(//verificar se o email existe no banco de dados   
+       const result = await connection.query(//verificar se o email existe no banco de dados   
             "SELECT  "id", "password" FROM usuarios WHERE email=$1",//  consulta sql para selecionar o usuario com o email fornecido                                            
              [username]//passa o email como parametro para evitar sql injection
      );
