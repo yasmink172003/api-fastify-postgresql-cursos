@@ -38,9 +38,10 @@ const PostCursos = (pool) => {
     
     const connection = await pool.connect(); 
     // abre uma conexão com o banco de dadostry {
-
       const { nome, horas, ano } = request.body//pega os dados do curso do campo de requisicao
-       await connection.query("BEGIN");
+
+       try{
+      await connection.query("BEGIN");
       const result = await pool.query(`
         INSERT INTO cursos
         (nome, horas, ano)
