@@ -1,30 +1,45 @@
 const GetCursos = (pool) => {
   return async (request, reply) => {
+    const connection = await pool.connect(); 
+    // abre uma conexão com o banco de dados
+    
     try {
 
       const result = await pool.query(`
         SELECT id, nome, horas, ano
         FROM cursos
       `)
+return result.rows.length === 0
+        ? rep.code(204).send()
+        // se não encontrar nenhum registro retorna 204 
 
-      return reply.status(200).send(result.rows)//retorna os cursos encontrados n banco de dados
+        : rep.code(200).send(result.rows);
+        // se encontrar registros returna 200
 
     } catch (error) {
-      return reply.status(500).send({
-        erro: error.message
-      })
 
+      console.log(error); 
+      // mostra o erro nso terminal
+
+      return rep.code(500).send({ error: "Erro ao buscar clientes" });
+      // retorna erro 5000 caso aconteça algum problema no servidor
+
+    } finally {
+      connection.release();
+      // libera a conexão com o banco 
     }
-  }
-}
+  };
+};
 
 
 const PostCursos = (pool) => {
   return async (request, reply) => {
-    try {
+    
+    const connection = await pool.connect(); 
+    // abre uma conexão com o banco de dadostry {
 
       const { nome, horas, ano } = request.body//pega os dados do curso do campo de requisicao
-
+       await connection.query("BEGIN");
       const result = await pool.query(`
         INSERT INTO cursos
         (nome, horas, ano)
@@ -32,20 +47,41 @@ const PostCursos = (pool) => {
         RETURNING *
       `, [nome, horas, ano])//insere o curso no banco de dados e retrorna o curso inserido
 
-      return reply.status(201).send(result.rows)//retorna o curso inserido
+     
+      const result = await connection.query(sql, values);
+      // executa a query passando os valores
+
+      await connection.query("COMMIT");
+      // confirma a transação no banco
+
+      return rep.code(201).send({
+        msg: "Inserido cokm sucesso",
+        id: result.rows[0].id
+      });
+      // retorna status 201 com o id do cliente criado
 
     } catch (error) {
-      return reply.status(500).send({
-        erro: error.message
-      })
+      await connection.query("ROLLBACK");
+      // desfaz qualquer alteração caso ocorra erro
+      console.log(error);
+      // mostra o erro no terminal
+
+      return rep.code(500).send({
+        error: "Erro ao inserir cliente"
+      });
+      // retorna erro interno do servidor
+
+    } finally {
+      connection.release();
+      // libera a conexão com o banco
 
     }
-  }
-}
-
+  };
+};
 
 const PutCursos = (pool) => {
   return async (request, reply) => {
+   const connection = await pool.connect(); 
     try {
 
       const { id } = request.params//pega o id do curso da url
@@ -63,20 +99,37 @@ const PutCursos = (pool) => {
           mensagem: "Curso não encontrado"
         })
       }
+ await connection.query(sql, values);
+      // executa a atualização
 
-      return reply.status(200).send(result.rows)//retorna o resultado atualizado
+      return rep.code(200).send({
+        msg: "Cliente atualizado com sucesso"
+      });
+      // retorna sucwsso se atualizar corretamente
 
     } catch (error) {
-      return reply.status(500).send({
-        erro: error.message
-      })
+      console.log(error);
+      // mostra erro no telminal
 
+      return rep.code(500).send({
+        error: "Erro ao atualçizar cliente"
+      });
+      // retorna erro interno caso algo falhe
+
+    } finally {
+      connection.release();
+      // libera a conexãl com o banco
     }
-  }
-}
+  };
+};
+
+
 const DeleteCursos = (pool) => {
-  return async (request, reply) => {
-    try {
+ return async (request, reply) => {
+    const connection = await pool.connect(); 
+    // abre uma conexão com o banco de dados
+
+   try {
 
       const { id } = request.params//pega o id do curso da url
       const result = await pool.query(`
@@ -95,15 +148,21 @@ const DeleteCursos = (pool) => {
         mensagem: "Curso deletado",
         curso: result.rows
       })
+   } catch (error) {
+      console.log(error);
+      // mostra erro no terminal
 
-    } catch (error) {
-      return reply.status(500).send({
-        erro: error.message
-      })
+      return rep.code(500).send({
+        error: "Erro ao deletar cliente"
+      });
+      // retorna erro caso algo dê errado
 
+    } finally {
+      connection.release();
+      // libera conexão com o banco
     }
-  }
-}
+  };
+};
 
 
 module.exports = {//exporta as funcoes de cursos para serem usados no server.js
