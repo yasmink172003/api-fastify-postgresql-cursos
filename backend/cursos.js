@@ -35,7 +35,7 @@ const GetCursos = (pool) => {
 
 const PostCursos = (pool) => {
   return async (request, reply) => {
-    
+    const data = req.body
     const connection = await pool.connect(); 
     // abre uma conexão com o banco de dadostry {
       const { nome, horas, ano } = request.body//pega os dados do curso do campo de requisicao
@@ -45,10 +45,13 @@ const PostCursos = (pool) => {
       const result = await pool.query(`
         INSERT INTO cursos
         (nome, horas, ano)
-        VALUES ($1,$2,$3)
+        VALUES ($1,$2,$3
+        )
         RETURNING *
-      `, [nome, horas, ano])//insere o curso no banco de dados e retrorna o curso inserido
-
+      `,
+        const values =[
+        data.nome, data.horas, data.ano
+        ];                            
      
       const result = await connection.query(sql, values);
       // executa a query passando os valores
