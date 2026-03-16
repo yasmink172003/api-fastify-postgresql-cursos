@@ -4,19 +4,19 @@ const GetCursos = (pool) => {
     // abre uma conexão com o banco de dados
     
     try {
-
-      const result = await pool.query(`
+        const result = await pool.query(`
         SELECT id, nome, horas, ano
         FROM cursos
       `)
-return result.rows.length === 0
+    return result.rows.length === 0
         ? rep.code(204).send()
         // se não encontrar nenhum registro retorna 204 
 
         : rep.code(200).send(result.rows);
         // se encontrar registros returna 200
 
-    } catch (error) {
+    }  
+    catch (error) {
 
       console.log(error); 
       // mostra o erro nso terminal
@@ -24,7 +24,8 @@ return result.rows.length === 0
       return rep.code(500).send({ error: "Erro ao buscar clientes" });
       // retorna erro 5000 caso aconteça algum problema no servidor
 
-    } finally {
+    } 
+    finally {
       connection.release();
       // libera a conexão com o banco 
     }
@@ -60,7 +61,8 @@ const PostCursos = (pool) => {
       });
       // retorna status 201 com o id do cliente criado
 
-    } catch (error) {
+    } 
+    catch (error) {
       await connection.query("ROLLBACK");
       // desfaz qualquer alteração caso ocorra erro
       console.log(error);
@@ -71,7 +73,8 @@ const PostCursos = (pool) => {
       });
       // retorna erro interno do servidor
 
-    } finally {
+    }
+    finally {
       connection.release();
       // libera a conexão com o banco
 
@@ -148,7 +151,8 @@ const DeleteCursos = (pool) => {
         mensagem: "Curso deletado",
         curso: result.rows
       })
-   } catch (error) {
+   }
+   catch (error) {
       console.log(error);
       // mostra erro no terminal
 
@@ -157,7 +161,8 @@ const DeleteCursos = (pool) => {
       });
       // retorna erro caso algo dê errado
 
-    } finally {
+    } 
+   finally {
       connection.release();
       // libera conexão com o banco
     }
