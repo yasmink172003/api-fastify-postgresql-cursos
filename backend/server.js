@@ -2,7 +2,7 @@ const fastify = require('fastify')({ logger: true })// importa o fastify
 const jwt = require('@fastify/jwt')//importa o jwt
 const cors = require('@fastify/cors')//importa o cors
 const bcrypt = require('bcrypt')//importa o bcrypt
-require('dotenv').config()//importa as variaveis do ambiente
+const dotenv = require('dotenv').config()//importa as variaveis do ambiente
 const { pool } = require('./db')//importa a conexa com banco de dados 
 const cursos = require('./rotas/cursos.js')//imporat a rota de cursos 
 const usuarios = require('./rotas/usuarios.js')//importa a rota de usuarios
