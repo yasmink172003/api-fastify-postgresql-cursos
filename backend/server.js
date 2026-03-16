@@ -14,7 +14,7 @@ fastify.register(cors)//frontend pode acessar a api
 const jwtSecret = "S3NH@- S3CR3T@"
 fastify.register(jwt, {//configura o jwt
     secret: jwtSecret
-})
+});
 // Middleware autenticação
 fastify.decorate("authenticate", async (req, reply) => {
 try{
@@ -23,7 +23,7 @@ await request.jwtVerify()//verfica se o token é valido
 catch(err){//se o token for invalido retorna o
 reply.send(err)
 }
-})
+});
 
 // ROTAS
 fastify.get('/v1/GetCursos',{preHandler:[fastify.authenticate]},cursos.GetCursos(pool));
