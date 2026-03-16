@@ -1,6 +1,13 @@
 const authUsers = (pool, jwt, bcrypt, jwtSecret) => {//funcao para autenticar usuarios, recebe a conexao com o banco de dados e as depedendecias necessarias para gerar o token e hash 
   return async (request, reply) => {
-  
+  const{username, password}= req.body;
+   const connection = await pool.connect();
+
+    
+   if(!req.body || !username ||!password)
+         return rep.code (400).send({msg:'usuario deve colocar um corpo com as informaçoes necessarias a requisicao'});
+   
+    
     try {
         const { email, senha } = request.body//pega o email e a senha do campo de requisicao
 
